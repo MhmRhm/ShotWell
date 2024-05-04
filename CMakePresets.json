@@ -1,0 +1,98 @@
+{
+	"version": 6,
+	"cmakeMinimumRequired": {
+		"major": 3,
+		"minor": 29,
+		"patch": 2
+	},
+	"configurePresets": [
+		{
+			"name": "linux-default-debug",
+			"displayName": "Linux Debug",
+			"description": "Sets compilers, build and install directory, debug build type",
+			"binaryDir": "${sourceDir}/../${sourceDirName}-build-${presetName}",
+			"cacheVariables": {
+				"CMAKE_BUILD_TYPE": "Debug",
+				"CMAKE_CXX_STANDARD": "20",
+				"CMAKE_CXX_STANDARD_REQUIRED": "YES",
+				"CMAKE_CXX_EXTENSIONS": "OFF",
+				"CMAKE_EXPORT_COMPILE_COMMANDS": "YES",
+				"CMAKE_INSTALL_PREFIX": "${sourceDir}/../${sourceDirName}-install-${presetName}",
+				"DEFAULT_CXX_COMPILE_FLAGS": "-Wextra;-Wall;-Wfloat-equal;-Wundef;-Wpointer-arith;-Wshadow;-Wcast-align;-Wswitch-default;-Wswitch-enum;-Wconversion;-Wpedantic;-Werror",
+				"DEFAULT_CXX_OPTIMIZE_FLAG": "-O0"
+			}
+		},
+		{
+			"name": "linux-default-release",
+			"displayName": "Linux Release",
+			"description": "Sets compilers, build and install directory, release build type",
+			"binaryDir": "${sourceDir}/../${sourceDirName}-build-${presetName}",
+			"cacheVariables": {
+				"CMAKE_BUILD_TYPE": "Release",
+				"CMAKE_CXX_STANDARD": "20",
+				"CMAKE_CXX_STANDARD_REQUIRED": "YES",
+				"CMAKE_CXX_EXTENSIONS": "OFF",
+				"CMAKE_EXPORT_COMPILE_COMMANDS": "YES",
+				"CMAKE_INSTALL_PREFIX": "${sourceDir}/../${sourceDirName}-install-${presetName}",
+				"DEFAULT_CXX_COMPILE_FLAGS": "-Wextra;-Wall;-Wfloat-equal;-Wundef;-Wpointer-arith;-Wshadow;-Wcast-align;-Wswitch-default;-Wswitch-enum;-Wconversion;-Wpedantic;-Werror",
+				"DEFAULT_CXX_OPTIMIZE_FLAG": "-O3"
+			}
+		}
+	],
+	"buildPresets": [
+		{
+			"name": "base",
+			"jobs": 10
+		},
+		{
+			"name": "linux-default-debug",
+			"inherits": [
+				"base"
+			],
+			"displayName": "Linux Debug",
+			"description": "debug build type",
+			"configurePreset": "linux-default-debug",
+			"configuration": "Debug"
+		},
+		{
+			"name": "linux-default-release",
+			"inherits": [
+				"base"
+			],
+			"displayName": "Linux Release",
+			"description": "release build type",
+			"configurePreset": "linux-default-release",
+			"configuration": "Release"
+		}
+	],
+	"workflowPresets": [
+		{
+			"name": "linux-default-debug",
+			"displayName": "Linux Debug",
+			"steps": [
+				{
+					"type": "configure",
+					"name": "linux-default-debug"
+				},
+				{
+					"type": "build",
+					"name": "linux-default-debug"
+				}
+			]
+		},
+		{
+			"name": "linux-default-release",
+			"displayName": "Linux Release",
+			"steps": [
+				{
+					"type": "configure",
+					"name": "linux-default-release"
+				},
+				{
+					"type": "build",
+					"name": "linux-default-release"
+				}
+			]
+		}
+	]
+}
