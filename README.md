@@ -4,9 +4,9 @@ This is the code for real time tracking system for non-fixed objects.
 
 You need a [RealSense](https://www.intel.com/content/www/us/en/architecture-and-technology/realsense-overview.html) camera to run this code.
 
-# Requirements
+## Requirements
 
-First you need latest CMake:
+To install latest CMake:
 
 ```bash
 sudo apt-get install ca-certificates gpg wget
