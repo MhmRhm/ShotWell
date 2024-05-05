@@ -1,43 +1,51 @@
-// License: Apache 2.0. See LICENSE file in root directory.
-// Copyright(c) 2019 Intel Corporation. All Rights Reserved.
+#include <librealsense2/rs.hpp>
+#include <opencv2/opencv.hpp>
 
-#include <librealsense2/rs.hpp> // Include RealSense Cross Platform API
-
-// Hello RealSense example demonstrates the basics of connecting to a RealSense
-// device and taking advantage of depth data
 int main(int argc, char *argv[]) try {
-  // Create a Pipeline - this serves as a top-level API for streaming and
-  // processing frames
-  rs2::pipeline p;
+  using namespace std;
 
-  // Configure and start the pipeline
-  p.start();
+  rs2::config config{};
+  config.enable_stream(RS2_STREAM_DEPTH, RS2_FORMAT_Z16, 30);
+  config.enable_stream(RS2_STREAM_INFRARED, RS2_FORMAT_Y8, 30);
+
+  rs2::pipeline p;
+  p.start(config);
+
+  cv::namedWindow("Display Image", cv::WINDOW_AUTOSIZE);
 
   while (true) {
-    // Block program until frames arrive
     rs2::frameset frames = p.wait_for_frames();
+    rs2::depth_frame depth_frame = frames.get_depth_frame();
+    rs2::frame infrared_frame = frames.get_infrared_frame();
 
-    // Try to get a frame of a depth image
-    rs2::depth_frame depth = frames.get_depth_frame();
+    auto width = depth_frame.get_width();
+    auto height = depth_frame.get_height();
+    float dist_to_center = depth_frame.get_distance(width / 2, height / 2);
 
-    // Get the depth frame's dimensions
-    auto width = depth.get_width();
-    auto height = depth.get_height();
-
-    // Query the distance from the camera to the object in the center of the
-    // image
-    float dist_to_center = depth.get_distance(width / 2, height / 2);
-
-    // Print the distance
     std::cout << "The camera is facing an object " << dist_to_center
               << " meters away \r";
+
+    cv::Mat infrared_image(cv::Size(width, height), CV_8U,
+                           (void *)infrared_frame.get_data(),
+                           cv::Mat::AUTO_STEP);
+
+    cv::line(infrared_image, {0, 0}, {width, height}, {255, 255, 255});
+    cv::line(infrared_image, {width, 0}, {0, height}, {255, 255, 255});
+
+    cv::imshow("Display Image", infrared_image);
+
+    char c = cv::waitKey(25);
+    if (c == 'q')
+      break;
   }
 
   return EXIT_SUCCESS;
+
 } catch (const rs2::error &e) {
   std::cerr << "RealSense error calling " << e.get_failed_function() << "("
             << e.get_failed_args() << "):\n    " << e.what() << std::endl;
   return EXIT_FAILURE;
+
 } catch (const std::exception &e) {
   std::cerr << e.what() << std::endl;
   return EXIT_FAILURE;

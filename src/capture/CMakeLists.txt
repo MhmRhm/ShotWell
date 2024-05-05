@@ -28,6 +28,7 @@ target_link_libraries(capture_app
 	PRIVATE ftxui::screen
 	PRIVATE ftxui::dom
 	PRIVATE ftxui::component
+	PRIVATE ${OpenCV_LIBS}
 )
 
 include(Coverage)
