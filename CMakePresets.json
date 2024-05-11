@@ -41,14 +41,8 @@
 	],
 	"buildPresets": [
 		{
-			"name": "base",
-			"jobs": 10
-		},
-		{
 			"name": "linux-default-debug",
-			"inherits": [
-				"base"
-			],
+			"jobs": 10,
 			"displayName": "Linux Debug",
 			"description": "debug build type",
 			"configurePreset": "linux-default-debug",
@@ -56,9 +50,7 @@
 		},
 		{
 			"name": "linux-default-release",
-			"inherits": [
-				"base"
-			],
+			"jobs": 10,
 			"displayName": "Linux Release",
 			"description": "release build type",
 			"configurePreset": "linux-default-release",

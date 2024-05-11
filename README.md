@@ -53,3 +53,11 @@ cmake -DOPENCV_EXTRA_MODULES_PATH=../../opencv_contrib/modules/ ../../opencv
 cmake --build . --parallel $(nproc)
 sudo make install
 ```
+
+## Compilation
+To compile run the following commands:
+
+```bash
+cmake --preset linux-default-debug
+cmake --build --preset linux-default-debug
+```
